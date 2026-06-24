@@ -1,0 +1,11 @@
+
+enum ROLE {
+    AUTHOR
+    USER
+    ADMIN
+}
+
+enum ACTIVE_STATUS {
+    ACTIVE
+    BLOCKED
+}
