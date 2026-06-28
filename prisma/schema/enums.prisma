@@ -1,4 +1,3 @@
-
 enum ROLE {
     AUTHOR
     USER
@@ -8,4 +7,15 @@ enum ROLE {
 enum ACTIVE_STATUS {
     ACTIVE
     BLOCKED
+}
+
+enum PostStatus {
+    DERFT
+    PUBLISHED
+    ARCH
+}
+
+enum CommentStatus {
+    APPROVED
+    REJECT
 }
