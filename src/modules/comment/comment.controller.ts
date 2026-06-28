@@ -1,17 +1,31 @@
+import { NextFunction, Request, Response } from "express";
+import { catchAsync2 } from "../../../utility/trycatchAsync";
 
 
 
-const createComment = () => { }
+const createComment = catchAsync2(async (req: Request, res: Response, next: NextFunction) => {
 
-const getCommentByAuthorId = () => { }
+});
 
-const getCommentByCommentId = () => { };
+const getCommentByAuthorId = catchAsync2(async (req: Request, res: Response, next: NextFunction) => {
 
-const updateCommentById = () => { };
+});
 
-const updateCommentByModerate = () => { };
+const getCommentByCommentId = catchAsync2(async (req: Request, res: Response, next: NextFunction) => {
 
-const deleteCommentById = () => { };
+});
+
+const updateCommentById = catchAsync2(async (req: Request, res: Response, next: NextFunction) => {
+
+});
+
+const updateCommentByModerate = catchAsync2(async (req: Request, res: Response, next: NextFunction) => {
+
+});
+
+const deleteCommentById = catchAsync2(async (req: Request, res: Response, next: NextFunction) => {
+
+});
 
 
 

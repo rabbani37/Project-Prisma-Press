@@ -1,20 +1,22 @@
 import { Router } from "express";
 import { postController } from "./post.controller";
+import { auth } from "../user/user.middleware";
+import { ROLE } from "../../../generated/prisma/enums";
 
 
 
 
 const router = Router();
 
-router.post("/",postController.createAPost);
+router.post("/", auth(ROLE.USER, ROLE.ADMIN, ROLE.AUTHOR), postController.createAPost);
 
 router.get("/my-post", postController.getMyPost);
+router.get("/start", auth(ROLE.ADMIN), postController.getPostStart);
 router.get("/:postId", postController.getASinglePost);
-router.get("/start", postController.getPostStart);
 
-router.patch("/:postId", postController.updatePost);
+router.patch("/:postId", auth(ROLE.USER, ROLE.ADMIN, ROLE.AUTHOR), postController.updatePost);
 
-router.delete("/:postId", postController.deletePost)
+router.delete("/:postId", auth(ROLE.USER, ROLE.ADMIN, ROLE.AUTHOR), postController.deletePost)
 
 
 

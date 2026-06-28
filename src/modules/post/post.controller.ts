@@ -1,19 +1,33 @@
+import { NextFunction, Request, Response } from "express";
+import { catchAsync2 } from "../../../utility/trycatchAsync";
 
-const createAPost = () => { }
+const createAPost = catchAsync2(async (req: Request, res: Response, next: NextFunction) => {
 
-
-const getMyPost = () => { };
-
-const getASinglePost = () => { };
-
-
-const getPostStart = () => { };
+});
 
 
-const updatePost = () => { };
+const getMyPost = catchAsync2(async (req: Request, res: Response, next: NextFunction) => {
+
+});
+
+const getASinglePost = catchAsync2(async (req: Request, res: Response, next: NextFunction) => {
+
+});
+
+const getPostStart = catchAsync2(async (req: Request, res: Response, next: NextFunction) => {
+
+});
+
+const updatePost = catchAsync2(async (req: Request, res: Response, next: NextFunction) => {
+
+});
 
 
-const deletePost = () => { };
+const deletePost = catchAsync2(async (req: Request, res: Response, next: NextFunction) => {
+
+});
+
+
 
 export const postController = {
     createAPost,
