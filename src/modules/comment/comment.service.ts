@@ -22,9 +22,15 @@ const getCommentByAuthorIdFromDb = async (authorId: string) => {
         where: {
             authorId
         },
+        orderBy: {
+            createdAt: "desc"
+        },
         include: {
-            author: {
-                omit: { password: true }
+            post: {
+                select: {
+                    id: true,
+                    title: true
+                }
             }
         }
     });
