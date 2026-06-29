@@ -5,6 +5,7 @@ import { sendRespose } from "../../../utility/sendResponce";
 import httpstatus from "http-status"
 import { constants } from "node:buffer";
 import { auth } from "../user/user.middleware";
+import { snapshot } from "node:test";
 
 
 
@@ -65,12 +66,15 @@ const updateCommentById = catchAsync2(async (req: Request, res: Response, next: 
 
 const updateCommentByModerate = catchAsync2(async (req: Request, res: Response, next: NextFunction) => {
 
+    const commentId = req.params.commentId;
+    const data = req.body;
+    const updatePost = await commentService.updateCommentByModerateFromDB(data, commentId as string)
 
     sendRespose(res, {
         success: true,
         statusCode: httpstatus.OK,
         message: "Comment Updated Successfully By Modarator ",
-        data: "result"
+        data: updatePost
     });
 });
 
