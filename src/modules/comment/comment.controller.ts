@@ -3,6 +3,8 @@ import { catchAsync2 } from "../../../utility/trycatchAsync";
 import { commentService } from "./comment.service";
 import { sendRespose } from "../../../utility/sendResponce";
 import httpstatus from "http-status"
+import { constants } from "node:buffer";
+import { auth } from "../user/user.middleware";
 
 
 
@@ -27,7 +29,7 @@ const getCommentByAuthorId = catchAsync2(async (req: Request, res: Response, nex
     sendRespose(res, {
         success: true,
         statusCode: httpstatus.OK,
-        message: "Comment Create Successfully",
+        message: "Successfully retrive your owns comments",
         data: comments
     });
 });
@@ -40,19 +42,24 @@ const getCommentByCommentId = catchAsync2(async (req: Request, res: Response, ne
     sendRespose(res, {
         success: true,
         statusCode: httpstatus.OK,
-        message: "Comment Create Successfully",
+        message: "Get a single comment successfully ",
         data: comment
     });
 });
 
 const updateCommentById = catchAsync2(async (req: Request, res: Response, next: NextFunction) => {
 
+    const authorId = req.user?.id;
+    const commentId = req.params.commentId;
+    const payload = req.body;
+
+    const updatedComment = await commentService.updateCommentByIdFromDB(payload, commentId as string, authorId as string)
 
     sendRespose(res, {
         success: true,
         statusCode: httpstatus.OK,
-        message: "Comment Create Successfully",
-        data: "result"
+        message: "Comment Updated Successfully",
+        data: updatedComment
     });
 });
 
@@ -62,7 +69,7 @@ const updateCommentByModerate = catchAsync2(async (req: Request, res: Response, 
     sendRespose(res, {
         success: true,
         statusCode: httpstatus.OK,
-        message: "Comment Create Successfully",
+        message: "Comment Updated Successfully By Modarator ",
         data: "result"
     });
 });
@@ -74,7 +81,7 @@ const deleteCommentById = catchAsync2(async (req: Request, res: Response, next: 
     sendRespose(res, {
         success: true,
         statusCode: httpstatus.OK,
-        message: "Comment Create Successfully",
+        message: "Comment Delete Successfully  ",
         data: "result"
     });
 });

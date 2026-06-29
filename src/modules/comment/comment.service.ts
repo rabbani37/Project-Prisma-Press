@@ -1,5 +1,5 @@
 import { prisma } from "../../lib/prisma";
-import { ICommentCreatePayload } from "./comment.interface";
+import { ICommentCreatePayload, IUpdateCommentPayload } from "./comment.interface";
 
 
 
@@ -42,14 +42,35 @@ const getCommentByAuthorIdFromDb = async (authorId: string) => {
 const getCommentByCommentIdFromDB = async (commentId: string) => {
     const comment = await prisma.comment.findUniqueOrThrow({
         where: { id: commentId },
-        include:{post:{select:{id:true,title:true,views:true}}}
+        include: { post: { select: { id: true, title: true, views: true } } }
     });
 
     return comment;
 };;
 
 
-const updateCommentByIdFromDB = () => { };
+const updateCommentByIdFromDB = async (payload: IUpdateCommentPayload, commentId: string, authorId: string) => {
+    await prisma.comment.findUniqueOrThrow({
+        where: {
+            id: commentId,
+            authorId
+        },
+        select: { id: true }
+    });
+
+    const updatedComment = await prisma.comment.update({
+        where: {
+            id: commentId,
+            authorId
+        },
+        data: {
+            ...payload
+        }
+    });
+
+    return updatedComment;
+
+};;
 
 
 const updateCommentByModerateFromDB = () => { };
