@@ -80,13 +80,14 @@ const updateCommentByModerate = catchAsync2(async (req: Request, res: Response, 
 
 
 const deleteCommentById = catchAsync2(async (req: Request, res: Response, next: NextFunction) => {
-
+    const commentId = req.params.commentId;
+    await commentService.deleteCommentByIdFromDB(commentId as string)
 
     sendRespose(res, {
         success: true,
         statusCode: httpstatus.OK,
         message: "Comment Delete Successfully  ",
-        data: "result"
+        data: null
     });
 });
 
