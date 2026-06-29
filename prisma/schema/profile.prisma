@@ -3,7 +3,7 @@ model profile {
     profile_photo String?
     bio          String?  @db.Text
     user_id      String   @unique 
-    user         user     @relation(fields: [user_id], references: [id])
+    user         User     @relation(fields: [user_id], references: [id])
     created_at   DateTime @default(now())
     updated_at   DateTime @updatedAt
 

@@ -5,7 +5,7 @@ import { jwtUtils } from "../../../utility/jwt";
 import config from "../../config";
 import { JwtPayload } from "jsonwebtoken";
 import { prisma } from "../../lib/prisma";
-import httpStatus from "http-status"
+import httpStatus from "http-status";
 
 
 
@@ -17,7 +17,7 @@ export const auth = (...requirdRole: ROLE[]) => {
                 req.headers.authorization?.split(" ")[1] : req.headers.authorization;
 
         if (!token) {
-            throw Error("You're not login. Please login to access this resourc");
+            throw new Error("You're not login. Please login to access this resourc");
         }
 
         const validToken = jwtUtils.tokenVerify(token, config.jwt_access_secret);
@@ -39,7 +39,6 @@ export const auth = (...requirdRole: ROLE[]) => {
             where: { id, email, name, role }
         });
 
-        console.log("user", user);
         if (!user) {
             throw new Error("User Not Found. Please login again ");
         }
@@ -47,7 +46,6 @@ export const auth = (...requirdRole: ROLE[]) => {
             throw new Error("Your accout is blocked. Please contarct to support. ")
         };
 
-        console.log("object");
         req.user = { id, name, email, role }
         next()
     })
