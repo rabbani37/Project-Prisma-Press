@@ -7,6 +7,17 @@ export interface ICreatePostPayload {
     thumbnail?: string;
     isFetured?: boolean;
     status?: PostStatus;
-    views?:number;
+    views?: number;
     tags: string[];
+}
+
+export interface IUpdatePostPayload {
+    title?: string;
+    content?: string;
+    thumbnail?: string;
+    isFetured?: boolean;
+    status?: PostStatus;
+    views?: number;
+    tags?: string[];
+
 }

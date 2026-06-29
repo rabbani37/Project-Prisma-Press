@@ -64,18 +64,62 @@ const getMyPost = catchAsync2(async (req: Request, res: Response, next: NextFunc
 });;
 
 
-const getPostStart = catchAsync2(async (req: Request, res: Response, next: NextFunction) => {
-console.log("abcabcabcabc");
-});;
-
 const updatePost = catchAsync2(async (req: Request, res: Response, next: NextFunction) => {
+
+    const authorId = req.user?.id;
+    const postId = req.params.postId;
+
+    if (!postId) {
+        throw new Error("post id required")
+    }
+
+    const payload = req.body;
+    const isAdmin = req.user?.role === "ADMIN";
+
+
+    const result = await postService.updatePostFromDB(postId as string, payload, authorId as string, isAdmin as true);
+    sendRespose(res, {
+        success: true,
+        statusCode: httpstatus.OK,
+        message: "Successfully Updated You Posts",
+        data: result
+    });
 
 });;
 
 
 const deletePost = catchAsync2(async (req: Request, res: Response, next: NextFunction) => {
+    const authorId = req.user?.id;
+    const postId = req.params.postId;
+
+    const isAdmin = req.user?.role === "ADMIN";
+
+    await postService.deletePostFromDB(postId as string, authorId as string, isAdmin as true);
+    sendRespose(res, {
+        success: true,
+        statusCode: httpstatus.OK,
+        message: "Successfully Deleted You Posts",
+        data: null
+    });
 
 });
+
+
+
+
+const getPostStart = catchAsync2(async (req: Request, res: Response, next: NextFunction) => {
+
+    const result = await postService.getPostStartFromDB()
+
+    sendRespose(res, {
+        success: true,
+        statusCode: httpstatus.OK,
+        message: "Successfully Get You Posts Start",
+        data: result
+    });
+
+});;
+
 
 
 
