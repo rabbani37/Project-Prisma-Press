@@ -22,24 +22,26 @@ const createComment = catchAsync2(async (req: Request, res: Response, next: Next
 
 const getCommentByAuthorId = catchAsync2(async (req: Request, res: Response, next: NextFunction) => {
     const authorId = req.params.authorId;
-    const comment = await commentService.getCommentByAuthorIdFromDb(authorId as string)
+    const comments = await commentService.getCommentByAuthorIdFromDb(authorId as string)
+
+    sendRespose(res, {
+        success: true,
+        statusCode: httpstatus.OK,
+        message: "Comment Create Successfully",
+        data: comments
+    });
+});
+
+const getCommentByCommentId = catchAsync2(async (req: Request, res: Response, next: NextFunction) => {
+
+    const commentId = req.params.commentId;
+    const comment = await commentService.getCommentByCommentIdFromDB(commentId as string)
 
     sendRespose(res, {
         success: true,
         statusCode: httpstatus.OK,
         message: "Comment Create Successfully",
         data: comment
-    });
-});
-
-const getCommentByCommentId = catchAsync2(async (req: Request, res: Response, next: NextFunction) => {
-
-
-    sendRespose(res, {
-        success: true,
-        statusCode: httpstatus.OK,
-        message: "Comment Create Successfully",
-        data: "result"
     });
 });
 
