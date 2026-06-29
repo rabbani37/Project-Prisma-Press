@@ -94,23 +94,24 @@ const updateCommentByModerateFromDB = async (payload: IModaratCommentPayload, co
     });
 
     return updateComment
-};
+};;
 
 
 const deleteCommentByIdFromDB = async (commentId: string) => {
+
     await prisma.comment.findUniqueOrThrow({
         where:{
             id:commentId
         }
     });
 
+
     await prisma.comment.delete({
         where:{
             id:commentId
         }
     })
-
-};
+};;
 
 
 export const commentService = {

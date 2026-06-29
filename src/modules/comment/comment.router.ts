@@ -4,8 +4,6 @@ import { auth } from "../user/user.middleware";
 import { ROLE } from "../../../generated/prisma/enums";
 
 
-
-
 const router = Router();
 
 router.post("/",auth(ROLE.USER, ROLE.ADMIN, ROLE.AUTHOR),commentController.createComment);
