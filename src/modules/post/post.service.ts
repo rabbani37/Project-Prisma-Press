@@ -1,26 +1,238 @@
 import { CommentStatus, PostStatus } from "../../../generated/prisma/enums";
 import { prisma } from "../../lib/prisma"
-import { ICreatePostPayload, IUpdatePostPayload } from "./post.interface"
+import { ICreatePostPayload, IPostQuary, IUpdatePostPayload } from "./post.interface"
+import { PostWhereInput } from "../../../generated/prisma/models";
 
 const createAPostFromDB = async (payload: ICreatePostPayload, userId: string) => {
 
-    await prisma.post.create({
+    const post = await prisma.post.create({
         data: {
             ...payload,
             authorId: userId,
         }
     });
-
+    return post;
 };;
 
 
 
-const getAllPostFromDB = async () => {
+const getAllPostFromDB = async (query: IPostQuary) => {
+
+    const limit = query.limit ? Number(query.limit) : 10;
+    const page = query.page ? Number(query.page) : 1;
+    const skip = (page - 1) * limit;
+
+    const sortBy = query.sortBy ? query.sortBy : "createdAt";
+    const sortOrder = query.sortOrder ? query.sortOrder : "desc"
+
+
+
+    const andCondition: PostWhereInput[] = [];
+
+
+    if (query.searchTarm) {
+        andCondition.push({
+            OR: [
+                {
+                    title: {
+                        contains: query.searchTarm,
+                        mode: "insensitive"
+                    }
+                },
+                {
+                    content: {
+                        contains: query.searchTarm,
+                        mode: "insensitive"
+                    }
+                }
+            ]
+        })
+    }
+
+
+
+    if (query.title) {
+        andCondition.push({
+            title: query.title
+        })
+    };
+
+    if (query.content) {
+        andCondition.push({
+            content: query.content
+        })
+    };
+
+    if (query.authorId) {
+        andCondition.push({
+            authorId: query.authorId
+        })
+    };
+
+    if (query.isFetured) {
+        andCondition.push({
+            isFetured: Boolean(query.isFetured)
+        })
+    };
+
+    if (query.tags) {
+        andCondition.push({
+            tags: {
+                hasSome: JSON.parse(query.tags as string)
+            }
+        })
+    };
+
+    if (query.status) {
+        andCondition.push({
+            status: query.status
+        })
+    };
+
+
+
+
+
     const allPosts = await prisma.post.findMany({
+        /// Filtaring: without AND operator 
+
+        // where:{
+        //     title:"Complete CRUD with Prisma",
+        //     content:"Build Create, Read, Update, and Delete operations using Prisma ORM."
+        // },
+
+        /// Filter : with AND operator
+        // where: {
+        //     AND: [
+        //         { title: "Authentication with Passport.js" },
+        //         { content: "Implement local and JWT authentication strategies using Passport.js in Express     applications." },
+        //         {
+        //             tags: {
+        //                 hasEvery: ["prisma"]
+        //             }
+        //         }
+        //     ]
+        // },
+
+        /// Search: 
+        // where: {
+        //     title: {
+        //         contains: "Advanced",
+        //         mode: "insensitive"
+        //     },
+
+        // },
+
+        /// Searching : with OR operator
+
+        // where: {
+        //     OR:[
+        //         {
+        //             title:{
+        //                 contains:"Advanced",
+        //                 mode:"insensitive"
+        //             }
+        //         },
+        //         {
+        //             content:{
+        //                 contains:"TypeScript",
+        //                 mode:"insensitive"
+        //             }
+        //         }
+        //     ]
+        // },
+
+
+        /// Combaining search and filtering 
+        // where: {
+
+        //     AND: [
+        //         {
+        //             OR: [
+        //                 {
+        //                     title: {
+        //                         contains: 'Advanced',
+        //                         mode: "insensitive"
+        //                     }
+        //                 },
+        //                 {
+        //                     content: {
+        //                         contains: "TypeScript",
+        //                         mode: "insensitive"
+        //                     }
+        //                 }
+        //             ]
+        //         },
+        //         {
+        //             title: "Advanced TypeScript Tips",
+        //             content: "Improve your TypeScript skills with advanced concepts and best practices."
+        //         }
+        //     ]
+        // },
+
+
+        // take: 2,
+        // skip: 0, // visiting : 1 page
+        // skip: 1, // visiting : 2 page
+        // skip: 2, // visiting : 3 page
+        // skip: 3, // visiting : 4 page
+        // skip: 4, // visiting : 4 page
+
+
+
+        // Sorting in ascending or descending spacific fields.
+        // orderBy: {
+        //     createdAt: 'desc',
+        //     title: "asc",
+        //     content: "desc"
+        // },
+
+
+        // where: {
+        //     AND: [
+        //         query.searchTarm ? {
+        //             OR: [
+        //                 {
+        //                     title: {
+        //                         contains: query.searchTarm,
+        //                         mode: "insensitive"
+        //                     }
+        //                 },
+        //                 {
+        //                     content: {
+        //                         contains: query.searchTarm,
+        //                         mode: "insensitive"
+        //                     }
+        //                 }
+        //             ]
+        //         } : {},
+
+
+        //         // title filtering
+        //         query.title ? { title: query.title } : {},
+        //         query.content ? { content: query.content } : {}
+
+        //     ]
+        // },
+
+        where: {
+            AND: andCondition
+        },
+
+        take: limit,
+        skip: skip,
+
+
+        orderBy: {
+            [sortBy]: sortOrder
+        },
         include: {
             author: {
-                omit: { password: true }
-            }
+                omit: {
+                    password: true
+                }
+            },
+            comments: true
         }
     });
 

@@ -1,10 +1,10 @@
 import { NextFunction, Request, Response } from "express";
-import { ROLE } from "../../../generated/prisma/enums";
-import { catchAsync2 } from "../../../utility/trycatchAsync";
-import { jwtUtils } from "../../../utility/jwt";
-import config from "../../config";
+import { ROLE } from "../../generated/prisma/enums";
+import { catchAsync2 } from "../../utility/trycatchAsync";
+import { jwtUtils } from "../../utility/jwt";
+import config from "../config";
 import { JwtPayload } from "jsonwebtoken";
-import { prisma } from "../../lib/prisma";
+import { prisma } from "../lib/prisma";
 import httpStatus from "http-status";
 
 

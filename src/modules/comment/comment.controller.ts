@@ -4,7 +4,7 @@ import { commentService } from "./comment.service";
 import { sendRespose } from "../../../utility/sendResponce";
 import httpstatus from "http-status"
 import { constants } from "node:buffer";
-import { auth } from "../user/user.middleware";
+import { auth } from "../../middleware/auth";
 import { snapshot } from "node:test";
 
 

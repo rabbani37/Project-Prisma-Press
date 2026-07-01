@@ -22,11 +22,13 @@ const createAPost = catchAsync2(async (req: Request, res: Response, next: NextFu
 
 const getAllPost = catchAsync2(async (req: Request, res: Response, next: NextFunction) => {
 
-    const result = await postService.getAllPostFromDB();
+    const query = req.query
+    
+    const result = await postService.getAllPostFromDB(query) ;
     sendRespose(res, {
         success: true,
         statusCode: httpstatus.OK,
-        message: "Successfully Get app posts",
+        message: "Successfully retrive all posts",
         data: result
     });
 });;
