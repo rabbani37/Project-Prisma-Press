@@ -12,9 +12,9 @@ const registerUserIntoDB = async (payload: IRegisterUser) => {
     const isExsistUser = await prisma.user.findUnique({
         where: { email }
     });
-    if (isExsistUser) {
-        throw Error("User with this email already exgist")
-    }
+    // if (isExsistUser) {
+    //     throw Error("User with this email already exgist")
+    // }
 
     const hashPassword = await bcrypt.hash(password, Number(config.bcrypt_salt_rounds))
 
