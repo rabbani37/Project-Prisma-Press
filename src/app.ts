@@ -8,6 +8,7 @@ import { postRouter } from "./modules/post/post.router";
 import { commentRouter } from "./modules/comment/comment.router";
 import { notFound } from "./middleware/notFound";
 import { globalErrorHandler } from "./middleware/globalErrorHandler";
+import { subscriptionRouter } from "./modules/subscription/subscription.router";
 
 
 
@@ -28,7 +29,7 @@ app.use("/api/users", userRoutes);
 app.use("/api/auth", authRouter);
 app.use("/api/posts", postRouter)
 app.use("/api/comments", commentRouter)
-
+app.use("/api/subscription",subscriptionRouter)
 
 
 app.get("/", async (req: Request, res: Response) => {

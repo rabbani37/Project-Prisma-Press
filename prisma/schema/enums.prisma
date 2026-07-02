@@ -11,11 +11,17 @@ enum ACTIVE_STATUS {
 
 enum PostStatus {
     DERFT
-    PUBLISHED 
+    PUBLISHED
     ARCH
 }
 
 enum CommentStatus {
     APPROVED
     REJECT
+}
+
+enum SubscriptionStatus {
+    ACTIVE
+    CANCELED
+    EXPIRED
 }
